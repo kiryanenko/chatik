@@ -4,7 +4,7 @@
 {% block content %}
     <div class="row align-items-center my-3 px-2">
         <div class="col-auto mr-auto">
-            <h1 class="">Диалоги</h1>
+            <h1 class="">Диалог с <span>user@mail.ru</span></h1>
         </div>
         <div class="col-auto align-content-end">
             <input type="email" class="form-control" placeholder="Поиск по email">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="list-group">
-        {% for chat in "12345678901234567890" %}
+        {% for msg in "12345678901234567890" %}
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-start align-items-center">
                 <img src="{% static "images/profile.png" %}" class="mr-3 bg-primary">
                 <div class="w-100">
@@ -20,12 +20,9 @@
                         <span class="font-weight-bold">user@mail.ru</span>
                         <small>3 days ago</small>
                     </div>
-                    <small>
-                        <span class="text-primary"><span>user@mail.ru</span>: </span>
-                        <span class="">
-                            Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus blandit.
-                        </span>
-                    </small>
+                    <span>
+                        Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus blandit.
+                    </span>
                 </div>
             </a>
         {% endfor %}
