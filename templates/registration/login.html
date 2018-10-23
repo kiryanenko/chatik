@@ -1,22 +1,22 @@
 {% extends "registration/base.html" %}
 
 {% block content %}
-    <form>
-        <h1 class="h3 mb-4 font-weight-normal text-center">Авторизация</h1>
-        <div class="form-group row">
-            <label for="InputEmail" class="col-sm-3">Email</label>
-            <input type="email" class="form-control col-sm-9" id="InputEmail" aria-describedby="emailHelp"
-                   placeholder="example@mail.ru">
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <form>
+                <h1 class="h3 mb-5 font-weight-normal text-center">Авторизация</h1>
+                <div class="form-group row">
+                    <label for="InputEmail" class="col-sm-3">Email</label>
+                    <input type="email" class="form-control col-sm-9" id="InputEmail" aria-describedby="emailHelp"
+                           placeholder="example@mail.ru">
+                </div>
+                <div class="form-group row">
+                    <label for="InputPassword" class="col-sm-3">Пароль</label>
+                    <input type="password" class="form-control col-sm-9" id="InputPassword" placeholder="Password">
+                </div>
+                <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Войти</button>
+                <a href="{% url 'registration' %}?next={{ next }}" class="btn btn-lg btn-link btn-block">Регистрация</a>
+            </form>
         </div>
-        <div class="form-group row">
-            <label for="InputPassword" class="col-sm-3">Пароль</label>
-            <input type="password" class="form-control col-sm-9" id="InputPassword" placeholder="Password">
-        </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-        <p class="mt-5 text-muted text-center">&copy; 2018</p>
-    </form>
+    </div>
 {% endblock %}

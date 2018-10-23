@@ -4,3 +4,4 @@ psycopg2
 psycopg2-binary
 asgi_redis
 django-heroku
+django-crispy-forms
