@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import password_validation
-from django.core.exceptions import ValidationError
 
 from main.models import User
 
@@ -20,12 +19,17 @@ class RegistrationForm(forms.ModelForm):
             'password': 'Пароль',
         }
 
-    def clean_repeat_password(self):
-        pwd = self.cleaned_data['password']
-        repeat_pwd = self.cleaned_data['repeat_password']
-        if pwd != repeat_pwd:
-            raise ValidationError('Пароли не совпали.')
-        return repeat_pwd
+    def clean(self):
+        cleaned_data = super(RegistrationForm, self).clean()
+
+        pwd = cleaned_data.get('password')
+        repeat_pwd = cleaned_data.get('repeat_password')
+
+        if pwd and repeat_pwd:
+            if pwd != repeat_pwd:
+                self.add_error('repeat_password', 'Пароли не совпали.')
+
+        return cleaned_data
 
     def clean_password(self):
         pwd = self.cleaned_data['password']
