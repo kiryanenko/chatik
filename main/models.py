@@ -38,12 +38,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
 
     is_verified = models.BooleanField(default=False)
     verification_uuid = models.UUIDField(default=uuid.uuid4)
 
     objects = UserManager()
+
+    def verify(self):
+        self.is_verified = True
+        self.is_active = True
+        self.save()
 
 
 def user_post_save(sender, instance, signal, *args, **kwargs):

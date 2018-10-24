@@ -22,6 +22,6 @@ class EmailVerificationView(View):
             return render(request, 'registration/email_verification.html')
 
         user = get_object_or_404(User, verification_uuid=uuid)
-        user.is_verified = True
+        user.verify()
 
         return render(request, 'registration/success_ email_verification.html')
