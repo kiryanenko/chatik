@@ -30,11 +30,10 @@
         <div class="dropdown">
             <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                 <img src="{% static "images/profile.png" %}" class="rounded-circle mr-2">
-                <span>user@mail.ru</span>
-                {#            <button type="button" class="btn btn-sm btn-outline-light">Выйти</button>#}
+                <span>{{ request.user }}</span>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Выйти</a>
+                <a class="dropdown-item" href="{% url 'logout' %}?next={{request.path}}">Выйти</a>
             </div>
         </div>
     </div>
