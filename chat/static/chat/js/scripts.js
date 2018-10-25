@@ -54,4 +54,11 @@ function add_new_message(msg) {
         + '<span>' + msg.message + '</span></div>';
 
     messageBox.appendChild(messageElement);
+
+    scrollDownMessageBox()
+}
+
+function scrollDownMessageBox() {
+    let scrollBox = document.getElementsByClassName('message-box')[0];
+    scrollBox.scrollTop = scrollBox.scrollHeight;
 }

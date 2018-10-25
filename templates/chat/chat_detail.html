@@ -42,5 +42,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>$(document).ready(() => connectToChat({{ chat.pk }}))</script>
+    <script>
+        $(document).ready(() => connectToChat({{ chat.pk }}));
+        scrollDownMessageBox();
+    </script>
 {% endblock %}
