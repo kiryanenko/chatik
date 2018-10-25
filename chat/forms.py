@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from chat.models import Chat
+from chat.models import Chat, Message
 from main.models import User
 
 
@@ -23,3 +23,23 @@ class ChatForm(forms.Form):
     def save(self):
         second_user = self.cleaned_data['second_user']
         return Chat.objects.get_or_create_chat(self.user, second_user)
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ('message',)
+        widgets = {
+            'message': forms.Textarea(attrs={'placeholder': 'Текст сообщения', 'rows': 3}),
+        }
+        labels = {
+            'message': ''
+        }
+
+    def __init__(self, user=None, chat=None, **kwargs):
+        super().__init__(**kwargs)
+        self.user = user
+        self.chat = chat
+
+    def save(self, commit=True):
+        return self.chat.send_massage(self.user, self.cleaned_data['message'])

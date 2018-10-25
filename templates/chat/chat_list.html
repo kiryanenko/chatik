@@ -18,20 +18,18 @@
     <div class="list-group">
         {% for chat in object_list %}
             <a href="{% url 'chat_detail' pk=chat.pk %}" class="list-group-item list-group-item-action d-flex justify-content-start align-items-center">
-                <img src="{% static "images/profile.png" %}" class="mr-3 bg-primary">
+                <img src="{% static "chat/images/profile.png" %}" class="mr-3 bg-primary">
                 <div class="w-100">
                     <div class="d-flex w-100 justify-content-between">
                         <span class="font-weight-bold">
                             {% if chat.first_user == user %}{{ chat.second_user }}
                             {% else %}{{ chat.first_user }}{% endif %}
                         </span>
-                        <small>3 days ago</small>
+                        <small>{{ chat.last_message.created_at }}</small>
                     </div>
                     <small>
-                        <span class="text-primary"><span>user@mail.ru</span>: </span>
-                        <span class="">
-                            Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus blandit.
-                        </span>
+                        <span class="text-primary"><span>{{ chat.last_message.author }}</span>: </span>
+                        <span>{{ chat.last_message.message }}</span>
                     </small>
                 </div>
             </a>
