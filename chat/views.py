@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -36,6 +37,14 @@ class UserChatsView(ListView):
 
 class ChatDetailView(DetailView):
     model = Chat
+
+    def get_object(self, queryset=None):
+        chat = super().get_object()
+
+        if self.request.user not in chat.users:
+            raise PermissionDenied()
+
+        return chat
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

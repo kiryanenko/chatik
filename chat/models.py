@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.db import models
 
 from main.models import User
@@ -27,10 +28,17 @@ class Chat(models.Model):
         return self.second_user if current_user == self.first_user else self.first_user
 
     def send_massage(self, user, msg):
+        if user not in self.users:
+            raise PermissionDenied()
+
         new_msg = Message.objects.create(author=user, chat=self, message=msg)
         self.last_message = new_msg
         self.save()
         return new_msg
+
+    @property
+    def users(self):
+        return [self.first_user, self.second_user]
 
     class Meta:
         unique_together = ('first_user', 'second_user')
