@@ -12,7 +12,8 @@ class ChatManager(models.Manager):
             return self.create(first_user=first_user, second_user=second_user)
 
     def user_chats(self, user):
-        return self.filter(models.Q(first_user=user) | models.Q(second_user=user), last_message__isnull=False)
+        return self.filter(models.Q(first_user=user) | models.Q(second_user=user),
+                           last_message__isnull=False).order_by('-last_message_id')
 
 
 class Chat(models.Model):
