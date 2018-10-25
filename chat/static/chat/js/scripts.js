@@ -43,6 +43,8 @@ function sendMessage(chat, msg) {
 
 
 function add_new_message(msg) {
+    let message = msg.message.replace(/\n/gi, '<br/>');
+
     let messageBox = document.getElementById('chat_massages');
 
     let messageElement = document.createElement('div');
@@ -51,7 +53,7 @@ function add_new_message(msg) {
         + '<div class="w-100"><div class="d-flex w-100 justify-content-between">'
         + '<span class="font-weight-bold">' + msg.author + '</span>'
         + '<small>' + msg.created_at + '</small></div>'
-        + '<span>' + msg.message + '</span></div>';
+        + '<span>' + message + '</span></div>';
 
     messageBox.appendChild(messageElement);
 
