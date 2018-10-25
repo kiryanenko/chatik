@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from django.db import models
+from django.dispatch import Signal
 
 from main.models import User
 
@@ -24,6 +25,8 @@ class Chat(models.Model):
 
     objects = ChatManager()
 
+    new_message = Signal(providing_args=('message',))
+
     def companion(self, current_user):
         return self.second_user if current_user == self.first_user else self.first_user
 
@@ -34,11 +37,14 @@ class Chat(models.Model):
         new_msg = Message.objects.create(author=user, chat=self, message=msg)
         self.last_message = new_msg
         self.save()
+
+        self.new_message.send(self, message=new_msg)
+
         return new_msg
 
     @property
     def users(self):
-        return [self.first_user, self.second_user]
+        return {self.first_user, self.second_user}
 
     class Meta:
         unique_together = ('first_user', 'second_user')

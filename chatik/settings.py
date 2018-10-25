@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'crispy_forms',
     'main',
     'chat'
@@ -144,6 +145,19 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Channels
+ASGI_APPLICATION = "chatik.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+    },
+}
 
 
 # Static files (CSS, JavaScript, Images)

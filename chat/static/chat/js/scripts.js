@@ -17,10 +17,41 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 
 
+function connectToChat(chat_id) {
+    const ws = new WebSocket('ws://' + window.location.host + '/chats/2/');
+
+    ws.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+
+        add_new_message(data)
+    };
+
+    ws.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+}
+
+
 function sendMessage(chat, msg) {
     $.ajax({
         url: '/chats/' + chat + '/messages/',
         type: 'POST',
         data: { message: msg, csrfmiddlewaretoken: csrftoken }
     })
+}
+
+
+function add_new_message(msg) {
+    let messageBox = document.getElementById('chat_massages');
+
+    let messageElement = document.createElement('div');
+    messageElement.className = "list-group-item list-group-item-action d-flex justify-content-start align-items-center";
+    messageElement.innerHTML = '<img src="/static/chat/images/profile.png" class="mr-3 bg-primary">'
+        + '<div class="w-100"><div class="d-flex w-100 justify-content-between">'
+        + '<span class="font-weight-bold">' + msg.author + '</span>'
+        + '<small>' + msg.created_at + '</small></div>'
+        + '<span>' + msg.message + '</span></div>';
+
+    messageBox.appendChild(messageElement);
 }

@@ -4,10 +4,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView
 
 from chat.forms import ChatForm, MessageForm
-from chat.models import Chat, Message
+from chat.models import Chat
 from main.views import HttpResponseAjax, HttpResponseAjaxError
 
 
@@ -60,6 +60,6 @@ def create_message(request, chat_id=None):
     form = MessageForm(user=request.user, chat=chat, data=request.POST)
     if form.is_valid():
         msg = form.save()
-        return HttpResponseAjax(message=msg.message, created_at=msg.created_at, user=msg.author)
+        return HttpResponseAjax(message=msg.message, created_at=msg.created_at.isoformat(), user=msg.author.email)
     else:
         return HttpResponseAjaxError(errors=form.errors)
