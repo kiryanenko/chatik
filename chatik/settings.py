@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import django_heroku
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -119,11 +121,12 @@ LOGIN_REDIRECT_URL = '/'
 
 
 # REDIS related settings
-REDIS_HOST = 'localhost'
-REDIS_PORT = '6379'
-BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+BROKER_URL = os.environ.get('BROKER_URL', os.environ.get('REDIS_URL', 'redis://' + REDIS_HOST + ':' + REDIS_PORT))
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND',
+                                       os.environ.get('REDIS_URL', 'redis://' + REDIS_HOST + ':' + REDIS_PORT))
 
 
 EMAIL_USE_TLS = True
@@ -167,3 +170,6 @@ STATIC_URL = '/static/'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+django_heroku.settings(locals())
