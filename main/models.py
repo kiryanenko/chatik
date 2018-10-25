@@ -32,6 +32,10 @@ class UserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+    def get_user_by_email(self, email):
+        email = self.normalize_email(email)
+        return self.get(email=email)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
