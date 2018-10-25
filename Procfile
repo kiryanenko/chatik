@@ -1,3 +1,3 @@
-web: daphne chatik.asgi:channel_layer --port $PORT --bind 0.0.0.0 -v2
+web: daphne chatik.asgi:application -b 0.0.0.0 -p $PORT -v2
 worker: python manage.py runworker -v2
 celery: celery worker --app=tasks.app
