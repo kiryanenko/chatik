@@ -6,3 +6,4 @@ channels_redis
 django-heroku
 django-crispy-forms
 celery
+redis
