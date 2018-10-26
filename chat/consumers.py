@@ -52,6 +52,9 @@ class ChatConsumer(JsonWebsocketConsumer):
     def new_message(self, msg):
         self.send_json(msg)
 
+    def user_has_read(self, msg):
+        self.send_json(msg)
+
     @classmethod
     def chat_group_name(cls, chat_id):
         return cls.GROUP_PREFIX + str(chat_id)
@@ -63,7 +66,17 @@ class ChatConsumer(JsonWebsocketConsumer):
             'id': sender.pk,
             'message': escape(message.message),
             'author': message.author.email,
+            'has_read': message.has_read,
             'created_at': message.created_at.strftime("%b. %d, %Y, %H:%M"),
             'type': 'new_message'
+        })
+
+    @staticmethod
+    @receiver(Chat.has_read)
+    def group_send_user_has_read(sender, user, **kwargs):
+        async_to_sync(channel_layer.group_send)(ChatConsumer.chat_group_name(sender.pk), {
+            'id': sender.pk,
+            'user': user.email,
+            'type': 'user_has_read'
         })
 

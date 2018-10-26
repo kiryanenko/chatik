@@ -1,3 +1,6 @@
+"use strict";
+
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -26,7 +29,14 @@ function connectToChat(chat_id) {
         const data = JSON.parse(e.data);
         console.log(data);
 
-        add_new_message(data)
+        switch (data.type) {
+            case 'new_message':
+                add_new_message(data);
+                break;
+            case 'user_has_read':
+                 has_read_chat();
+                 break;
+        }
     };
 
     ws.onclose = function(e) {
@@ -43,21 +53,26 @@ function sendMessage(chat, msg) {
     })
 }
 
+const BASE_MSG_CLASSES = 'list-group-item list-group-item-action d-flex justify-content-start align-items-center';
+const NOT_READ_MSG_CLASS = "list-group-item-light";
 
 function add_new_message(msg) {
     let message = msg.message.replace(/\n/gi, '<br/>');
 
-    let messageBox = document.getElementById('chat_massages');
+    let chat = document.getElementById('chat_massages');
 
     let messageElement = document.createElement('div');
-    messageElement.className = "list-group-item list-group-item-action d-flex justify-content-start align-items-center";
+    messageElement.className = BASE_MSG_CLASSES;
+    if (!msg.has_read) {
+        messageElement.className += ' ' + NOT_READ_MSG_CLASS;
+    }
     messageElement.innerHTML = '<img src="/static/chat/images/profile.png" class="mr-3 bg-primary">'
         + '<div class="w-100"><div class="d-flex w-100 justify-content-between">'
         + '<span class="font-weight-bold">' + msg.author + '</span>'
         + '<small>' + msg.created_at + '</small></div>'
         + '<span>' + message + '</span></div>';
 
-    messageBox.appendChild(messageElement);
+    chat.appendChild(messageElement);
 
     scrollDownMessageBox()
 }
@@ -65,4 +80,11 @@ function add_new_message(msg) {
 function scrollDownMessageBox() {
     let scrollBox = document.getElementsByClassName('message-box')[0];
     scrollBox.scrollTop = scrollBox.scrollHeight;
+}
+
+function has_read_chat() {
+    let chat = document.getElementById('chat_massages');
+    let messages = Array.from(chat.getElementsByClassName(NOT_READ_MSG_CLASS));
+    console.log(messages);
+    messages.forEach((msg) => msg.className = BASE_MSG_CLASSES)
 }

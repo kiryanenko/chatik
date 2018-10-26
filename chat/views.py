@@ -39,10 +39,13 @@ class ChatDetailView(DetailView):
     model = Chat
 
     def get_object(self, queryset=None):
+        user = self.request.user
         chat = super().get_object()
 
-        if self.request.user not in chat.users:
+        if user not in chat.users:
             raise PermissionDenied()
+
+        chat.user_has_read(user)
 
         return chat
 

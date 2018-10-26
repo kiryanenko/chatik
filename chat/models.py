@@ -26,6 +26,7 @@ class Chat(models.Model):
     objects = ChatManager()
 
     new_message = Signal(providing_args=('message',))
+    has_read = Signal(providing_args=('user',))
 
     def companion(self, current_user):
         return self.second_user if current_user == self.first_user else self.first_user
@@ -42,6 +43,13 @@ class Chat(models.Model):
 
         return new_msg
 
+    def user_has_read(self, user):
+        if user not in self.users:
+            raise PermissionDenied()
+
+        self.messages.exclude(author=user).update(has_read=True)
+        self.has_read.send(self, user=user)
+
     @property
     def users(self):
         return {self.first_user, self.second_user}
@@ -54,4 +62,5 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField(max_length=500)
+    has_read = models.BooleanField(default=False, help_text='Было ли прочитано данное сообщение.')
     created_at = models.DateTimeField(auto_now_add=True)

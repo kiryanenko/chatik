@@ -17,7 +17,8 @@
 
     <div class="list-group">
         {% for chat in object_list %}
-            <a href="{% url 'chat_detail' pk=chat.pk %}" class="list-group-item list-group-item-action d-flex justify-content-start align-items-center">
+            <a href="{% url 'chat_detail' pk=chat.pk %}"
+               class="list-group-item list-group-item-action d-flex justify-content-start align-items-center">
                 <img src="{% static "chat/images/profile.png" %}" class="mr-3 bg-primary">
                 <div class="w-100">
                     <div class="d-flex w-100 justify-content-between">
