@@ -42,6 +42,10 @@ class ChatConsumer(JsonWebsocketConsumer):
 
         self.accept()
 
+    def receive_json(self, content, **kwargs):
+        if content['type'] == 'has_read':
+            self.has_read()
+
     def disconnect(self, close_code):
         if hasattr(self, 'room_group_name'):
             async_to_sync(self.channel_layer.group_discard)(
@@ -49,11 +53,15 @@ class ChatConsumer(JsonWebsocketConsumer):
                 self.channel_name
             )
 
-    def new_message(self, msg):
-        self.send_json(msg)
+    def has_read(self):
+        self.chat.user_has_read(self.user)
 
-    def user_has_read(self, msg):
-        self.send_json(msg)
+    def new_message(self, data):
+        if self.user.email != data['data']['author']:
+            self.send_json(data)
+
+    def user_has_read(self, data):
+        self.send_json(data)
 
     @classmethod
     def chat_group_name(cls, chat_id):
@@ -62,14 +70,11 @@ class ChatConsumer(JsonWebsocketConsumer):
     @staticmethod
     @receiver(Chat.new_message)
     def group_send_new_message(sender, message, **kwargs):
-        async_to_sync(channel_layer.group_send)(ChatConsumer.chat_group_name(sender.pk), {
-            'id': sender.pk,
-            'message': escape(message.message),
-            'author': message.author.email,
-            'has_read': message.has_read,
-            'created_at': message.created_at.strftime("%b. %d, %Y, %H:%M"),
-            'type': 'new_message'
-        })
+        data = {
+            'type': 'new_message',
+            'data': message.to_dict
+        }
+        async_to_sync(channel_layer.group_send)(ChatConsumer.chat_group_name(sender.pk), data)
 
     @staticmethod
     @receiver(Chat.has_read)

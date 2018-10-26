@@ -63,6 +63,6 @@ def create_message(request, chat_id=None):
     form = MessageForm(user=request.user, chat=chat, data=request.POST)
     if form.is_valid():
         msg = form.save()
-        return HttpResponseAjax(message=msg.message, created_at=msg.created_at.isoformat(), user=msg.author.email)
+        return HttpResponseAjax(**msg.to_dict)
     else:
         return HttpResponseAjaxError(errors=form.errors)

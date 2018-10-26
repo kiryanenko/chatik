@@ -1,3 +1,5 @@
+from html import escape
+
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.dispatch import Signal
@@ -64,3 +66,14 @@ class Message(models.Model):
     message = models.TextField(max_length=500)
     has_read = models.BooleanField(default=False, help_text='Было ли прочитано данное сообщение.')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def to_dict(self):
+        return {
+            'id': self.pk,
+            'chat': self.chat.pk,
+            'message': escape(self.message),
+            'author': self.author.email,
+            'has_read': self.has_read,
+            'created_at': self.created_at.strftime("%b. %d, %Y, %H:%M"),
+        }
