@@ -20,7 +20,7 @@ const csrftoken = getCookie('csrftoken');
 function connectToChat(chat_id) {
     let protocol = window.location.protocol === "http:"? "ws" : 'wss';
 
-    const ws = new WebSocket(protocol + '://' + window.location.host + '/chats/2/');
+    const ws = new WebSocket(protocol + '://' + window.location.host + '/chats/' + chat_id + '/');
 
     ws.onmessage = function(e) {
         const data = JSON.parse(e.data);
