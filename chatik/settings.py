@@ -27,7 +27,7 @@ SECRET_KEY = '1ui*#(q0mq97b0_s+6)9ku0kxvc)c=qo4nh*(!vzzjj09rmq0@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CHATIK_HOST = 'http://127.0.0.1:8000'
+CHATIK_HOST = os.environ.get('CHATIK_HOST', 'http://127.0.0.1:8000')
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
