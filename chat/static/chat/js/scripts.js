@@ -66,7 +66,7 @@ function sendHasReadChat() {
 }
 
 
-const BASE_MSG_CLASSES = 'list-group-item list-group-item-action d-flex justify-content-start align-items-center';
+const BASE_MSG_CLASSES = 'list-group-item list-group-item-action d-flex align-items-start';
 const NOT_READ_MSG_CLASS = "list-group-item-light";
 
 function addNewMessage(msg) {
@@ -79,10 +79,12 @@ function addNewMessage(msg) {
     if (!msg.has_read) {
         messageElement.className += ' ' + NOT_READ_MSG_CLASS;
     }
-    messageElement.innerHTML = '<img src="/static/chat/images/profile.png" class="mr-3 bg-primary">'
+    messageElement.innerHTML = '<img src="/static/chat/images/profile.png" class="mr-3 mt-2 bg-primary">'
         + '<div class="w-100"><div class="d-flex w-100 justify-content-between">'
-        + '<span class="font-weight-bold">' + msg.author + '</span>'
-        + '<small>' + msg.created_at + '</small></div>'
+        + '<div class="row">'
+        + '<span class="col font-weight-bold">' + msg.author + '</span>'
+        + '<small class="col-auto">' + msg.created_at + '</small></div>'
+        + '</div>'
         + '<span>' + message + '</span></div>';
 
     chat.appendChild(messageElement);
