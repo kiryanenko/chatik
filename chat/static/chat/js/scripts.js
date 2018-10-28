@@ -80,10 +80,10 @@ function addNewMessage(msg) {
         messageElement.className += ' ' + NOT_READ_MSG_CLASS;
     }
     messageElement.innerHTML = '<img src="/static/chat/images/profile.png" class="mr-3 mt-2 bg-primary">'
-        + '<div class="w-100"><div class="d-flex w-100 justify-content-between">'
+        + '<div class="w-100">'
         + '<div class="row">'
         + '<span class="col font-weight-bold">' + msg.author + '</span>'
-        + '<small class="col-auto">' + msg.created_at + '</small></div>'
+        + '<small class="col-auto">' + msg.created_at + '</small>'
         + '</div>'
         + '<span>' + message + '</span></div>';
 
