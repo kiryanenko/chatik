@@ -2,16 +2,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="row justify-content-md-center">
-        <div class="col-6">
-            <h1 class="h3 mb-5 font-weight-normal text-center">Авторизация</h1>
-            <form method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-                {{ form|crispy }}
+    <div class="col-sm-6">
+        <h1 class="h3 mb-5 font-weight-normal text-center">Авторизация</h1>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form|crispy }}
 
-                <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Войти</button>
-                <a href="{% url 'registration' %}?next={{ next }}" class="btn btn-lg btn-link btn-block">Регистрация</a>
-            </form>
-        </div>
+            <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Войти</button>
+            <a href="{% url 'registration' %}?next={{ next }}" class="btn btn-lg btn-link btn-block">Регистрация</a>
+        </form>
     </div>
 {% endblock %}
